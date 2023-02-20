@@ -15,9 +15,8 @@
     <h1>URL Shortener Microservice</h1>
     <main>
       <section>
-        <form action="api/shorturl" method="POST">
+        <form id="shorten-form" action="/api/shorturl" method="POST">
           <fieldset>
-            <legend>URL Shortener</legend>
             <label for="url_input">URL:</label>
             <input id="url_input" type="text" name="url" placeholder="https://www.freecodecamp.org/" />
             <input type="submit" value="POST URL" />
@@ -26,7 +25,30 @@
       </section>
     </main>
     <footer>
-      <p>By <a href="https://www.freecodecamp.org/">freeCodeCamp</a></p>
+      <p>By <a href="https://gunbitportfolio.netlify.app/">Mateus Marinho</a></p>
     </footer>
+
+    <script>
+  const form = document.getElementById('shorten-form');
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const url = document.getElementById('url_input').value;
+    const response = await fetch('/api/shorturl', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ url })
+    });
+    const { original_url, short_url, error } = await response.json();
+    if (error) {
+      alert(error);
+    } else {
+      const output = `Original URL: ${original_url}\nShort URL: ${short_url}`;
+      alert(output);
+    }
+  });
+</script>
+
   </body>
 </html>
