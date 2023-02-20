@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-
 <html>
   <head>
-    <title>URL Shortener Microservice | freeCodeCamp.org</title>
+    <title>URL Shortener Microservice</title>
     <link href="/public/style.css" rel="stylesheet" type="text/css" />
   </head>
 
@@ -17,6 +16,7 @@
             <input type="submit" value="POST URL" />
           </fieldset>
         </form>
+        <div id="output"></div>
       </section>
     </main>
     <footer>
@@ -24,26 +24,26 @@
     </footer>
 
     <script>
-  const form = document.getElementById('shorten-form');
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const url = document.getElementById('url_input').value;
-    const response = await fetch('/api/shorturl', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ url })
-    });
-    const { original_url, short_url, error } = await response.json();
-    if (error) {
-      alert(error);
-    } else {
-      const output = `Original URL: ${original_url}\nShort URL: ${short_url}`;
-      alert(output);
-    }
-  });
-</script>
-
+      const form = document.getElementById('shorten-form');
+      const outputDiv = document.getElementById('output');
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const url = document.getElementById('url_input').value;
+        const response = await fetch('/api/shorturl', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ url })
+        });
+        const { original_url, short_url, error } = await response.json();
+        if (error) {
+          outputDiv.innerText = error;
+        } else {
+          const output = `Original URL: ${original_url}\nShort URL: ${short_url}`;
+          outputDiv.innerText = output;
+        }
+      });
+    </script>
   </body>
 </html>
